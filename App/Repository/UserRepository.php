@@ -7,10 +7,18 @@ use App\Model\User;
 
 class UserRepository{
 
-    private static \PDO $bdd;
+    public static \PDO $database;
 
     public function __contruct(){
-        self::$bdd = Bdd::connexion();
+        self::$database = Bdd::connexion();
+    }
+
+    public static function getBdd(){
+        return self::$database;
+    }
+
+    public function initialize(){
+        self::$database = Bdd::connexion();
     }
 
     public function add(User $user):User{
@@ -43,8 +51,9 @@ class UserRepository{
 
     public function findAll():array{
         try{
+            $this->initialize();
             $sql ="SELECT u.id, u.lastname, u.firstname, u.email FROM user AS u ORDER BY u.id";
-            $request = self::$bdd->prepare($sql);
+            $request = self::$database->prepare($sql);
             $request->execute();
             $request->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, User::class);
             $users = $request->fetchAll();
@@ -55,7 +64,19 @@ class UserRepository{
     }
 
     public function find(int $id):User{
-        return new User();
+        
+        try{
+            $this->initialize();
+            $sql ="SELECT u.id, u.lastname, u.firstname, u.email FROM user AS u WHERE u.id = ?";
+            $request = self::$database->prepare($sql);
+            $request->bindParam(1,$id, \PDO::PARAM_INT);
+            $request->execute();
+            $request->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, User::class);
+            $user = $request->fetch();
+            return $user;
+        }catch(\PDOException $error){
+            die("Error".$error->getMessage());
+        }
     }
 }
 ?>

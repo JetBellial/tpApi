@@ -9,12 +9,15 @@ $path = $url['path'] ?? '/';
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+use App\utils\Bdd;
 use App\Utils\Tools;
 use App\Controller\UserController;
+use App\Repository\UserRepository;
 
 
 
 $userController = new UserController();
+
 
 switch(trim($path,BASE_URL)){
     case '':
@@ -46,7 +49,7 @@ switch(trim($path,BASE_URL)){
             }
             break;
     default:
-        Tools::JsonResponse(["Erreur"=>"Erreu2"],404);
+        Tools::JsonResponse(["Erreur"=>"Erreur2"],404);
         break;
 }
 ?>
