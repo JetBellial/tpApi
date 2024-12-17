@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
+use App\Utils\Tools;
 
 class UserController{
     private UserRepository $repository;
@@ -11,7 +12,7 @@ class UserController{
     }
 
     public function save(){
-        echo 'ajout utilisateur';
+        Tools::JsonResponse(["Utilisateur créé"=>"Succes"],200);
     }
 }
 ?>

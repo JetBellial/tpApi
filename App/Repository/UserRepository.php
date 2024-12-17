@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Utils\Bdd;
+use App\Model\User;
 
 class UserRepository{
 
