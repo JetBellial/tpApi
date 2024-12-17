@@ -40,5 +40,22 @@ class UserRepository{
         }
         return $user;
     }
+
+    public function findAll():array{
+        try{
+            $sql ="SELECT u.id, u.lastname, u.firstname, u.email FROM user AS u ORDER BY u.id";
+            $request = self::$bdd->prepare($sql);
+            $request->execute();
+            $request->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, User::class);
+            $users = $request->fetchAll();
+            return $users;
+        }catch(\PDOException $error){
+            die("Error".$error->getMessage());
+        }
+    }
+
+    public function find(int $id):User{
+        return new User();
+    }
 }
 ?>
